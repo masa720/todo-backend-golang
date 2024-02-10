@@ -1,15 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/masa720/todo-backend-golang/controller"
+	"github.com/masa720/todo-backend-golang/database"
+	"github.com/masa720/todo-backend-golang/repository"
+	"github.com/masa720/todo-backend-golang/router"
+	"github.com/masa720/todo-backend-golang/usecase"
 )
 
-func helloHander(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hello Air</h1>")
-}
-
 func main() {
-	http.HandleFunc("/", helloHander)
-	http.ListenAndServe(":8080", nil)
+	db := database.Init()
+	tr := repository.NewTodoRepository(db)
+	tu := usecase.NewTodoUsecase(tr)
+	tc := controller.NewTodoController(tu)
+	r := router.NewRouter(tc)
+	r.Run(":8080")
 }
