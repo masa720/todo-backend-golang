@@ -6,7 +6,8 @@ import (
 )
 
 type TodoRepository interface {
-	GetTodos() ([]*model.Todo, error)
+	FindAll() ([]*model.Todo, error)
+	FindById(id uint) (*model.Todo, error)
 }
 
 type todoRepository struct {
@@ -17,10 +18,18 @@ func NewTodoRepository(db *gorm.DB) TodoRepository {
 	return &todoRepository{db}
 }
 
-func (tr *todoRepository) GetTodos() ([]*model.Todo, error) {
+func (tr *todoRepository) FindAll() ([]*model.Todo, error) {
 	var todos []*model.Todo
 	if err := tr.db.Find(&todos).Error; err != nil {
 		return nil, err
 	}
 	return todos, nil
+}
+
+func (tr *todoRepository) FindById(id uint) (*model.Todo, error) {
+	var todo *model.Todo
+	if err := tr.db.First(&todo, id).Error; err != nil {
+		return nil, err
+	}
+	return todo, nil
 }

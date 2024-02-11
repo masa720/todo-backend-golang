@@ -7,6 +7,7 @@ import (
 
 type TodoUsecase interface {
 	GetTodos() ([]*model.Todo, error)
+	GetTodo(id uint) (*model.Todo, error)
 }
 
 type todoUsecase struct {
@@ -18,5 +19,9 @@ func NewTodoUsecase(tr repository.TodoRepository) TodoUsecase {
 }
 
 func (tu *todoUsecase) GetTodos() ([]*model.Todo, error) {
-	return tu.todoRepository.GetTodos()
+	return tu.todoRepository.FindAll()
+}
+
+func (tu *todoUsecase) GetTodo(id uint) (*model.Todo, error) {
+	return tu.todoRepository.FindById(id)
 }
