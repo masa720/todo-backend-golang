@@ -37,7 +37,7 @@ func Init() *gorm.DB {
 		log.Fatalln(err)
 	}
 
-	// autoMigration()
+	autoMigration()
 
 	return db
 }

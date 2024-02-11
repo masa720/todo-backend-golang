@@ -14,6 +14,7 @@ import (
 type TodoController interface {
 	GetTodos(c *gin.Context)
 	GetTodo(c *gin.Context)
+	Create(c *gin.Context)
 }
 
 type todoController struct {
@@ -49,6 +50,21 @@ func (tc *todoController) GetTodo(c *gin.Context) {
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		}
+		return
+	}
+
+	c.JSON(http.StatusOK, todo)
+}
+
+func (tc *todoController) Create(c *gin.Context) {
+	var todo *model.Todo
+	if err := c.ShouldBindJSON(&todo); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := tc.todoUsecase.Create(todo); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

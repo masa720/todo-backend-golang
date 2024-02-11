@@ -8,9 +8,9 @@ import (
 func NewRouter(tc controller.TodoController) *gin.Engine {
 	r := gin.Default()
 
-	r.GET("/todos", tc.GetTodos)
-
-	r.GET("/todos/:id", tc.GetTodo)
+	r.GET("/api/v1/todos", tc.GetTodos)
+	r.POST("/api/v1/todos", tc.Create)
+	r.GET("/api/v1/todos/:id", tc.GetTodo)
 
 	return r
 }
