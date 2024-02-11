@@ -9,6 +9,8 @@ type TodoRepository interface {
 	FindAll() ([]*model.Todo, error)
 	FindById(id uint) (*model.Todo, error)
 	Create(todo *model.Todo) error
+	Update(todo *model.Todo, updateData map[string]interface{}) error
+	Delete(todo *model.Todo) error
 }
 
 type todoRepository struct {
@@ -37,4 +39,12 @@ func (tr *todoRepository) FindById(id uint) (*model.Todo, error) {
 
 func (tr *todoRepository) Create(todo *model.Todo) error {
 	return tr.db.Create(todo).Error
+}
+
+func (tr *todoRepository) Update(todo *model.Todo, updateData map[string]interface{}) error {
+	return tr.db.Model(&todo).Updates(updateData).Error
+}
+
+func (tr *todoRepository) Delete(todo *model.Todo) error {
+	return tr.db.Delete(todo).Error
 }
