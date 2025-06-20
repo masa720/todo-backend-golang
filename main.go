@@ -13,6 +13,11 @@ func main() {
 	tr := repository.NewTodoRepository(db)
 	tu := usecase.NewTodoUsecase(tr)
 	tc := controller.NewTodoController(tu)
-	r := router.NewRouter(tc)
+
+	ur := repository.NewUserRepository(db)
+	uu := usecase.NewUserUsecase(ur)
+	uc := controller.NewUserController(uu)
+
+	r := router.NewRouter(tc, uc)
 	r.Run(":8080")
 }

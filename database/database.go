@@ -58,5 +58,5 @@ func dbConnect(dialector gorm.Dialector, config gorm.Option, count uint) (err er
 }
 
 func autoMigration() {
-	db.AutoMigrate(&model.Todo{})
+	db.AutoMigrate(&model.Todo{}, &model.User{})
 }
